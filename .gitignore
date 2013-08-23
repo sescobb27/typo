@@ -23,3 +23,5 @@ public/cache/*
 .rbenv-version
 bin/
 .bundle/
+login.txt
+linecache19-0.5.13.gem
