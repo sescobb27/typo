@@ -431,6 +431,16 @@ class Article < Content
     end
   end
 
+  def merge_with merge_with_id
+    body = (self.body || "") + (other_article.body || "")
+    extended = (self.extended || "") + (other_article.extended || "") 
+    published_comments = self.published_comments + other_article.published_comments
+    result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
+    return if result == false
+    other_article.delete
+    result
+  end
+
   def set_defaults
     if self.attributes.include?("permalink") and
       (self.permalink.blank? or
