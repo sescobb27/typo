@@ -32,7 +32,7 @@ Feature: Merge Files
 
    Scenario: Merged article should contain comments from both articles
      When I edit article with title "Title1"
-     And I merge in article with title "Title2"
+     And I Merge in article with title "Title2"
      And I visit article with title "Title1"
      Then I should see texts "Text1" and "Text2" in merged article
      Then I should see comments "Title1-Good" and "Title2-Bad" in merged article

@@ -85,6 +85,10 @@ When /^I visit article with title "([^"]*)"$/ do |title|
   visit current_path
 end
 
+Then /^I should see link to "([^"]*)"$/ do |link|
+  page.should have_link link
+end
+
 Then /^I should see texts "([^"]*)" and "([^"]*)" in merged article$/ do |text1, text2|
   if page.respond_to? :should
     page.should have_content(text1)
