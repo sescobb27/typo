@@ -1,9 +1,17 @@
 Feature: Merge Files
-  As a non-admin
-  I can not merge files
+  As a blogger
+  In order to merge different articles with same topic
+  I want merge files
 
-  Scenario: Try to merge files
-    Given I am not an admin
-    When I try to merge files
-    Then I should be redirected to home page
-    And I should see a error message
+  Scenario: I am not a blogger admin
+    Given I am on the edit article "SaaSRoR" page
+    Then The 'merge_with' form should not be present 
+
+  Scenario: When articles are merged
+    Given I am on the edit article "SaaSRoR" page
+    When I fill 'merge_with' form with '1'
+    Then I press the 'merge' button
+    And I see the text of both previous articles together
+    And I see only one Author's name
+    And I see only one article's title
+    And I see all comments together
