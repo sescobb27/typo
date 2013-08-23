@@ -77,6 +77,27 @@ class Admin::ContentController < Admin::BaseController
     end
   end
 
+  def merge
+      article_id = params[:id]
+      @article = check_article(article_id) # fills error msg if any
+      return if @article == nil
+      other_article_id = params[:merge_with] # fills error msg if any
+      other_article = check_article(other_article_id)
+      return if other_article == nil
+      if article_id == other_article_id
+        redirect_to :action => 'index'
+        flash[:error] = _("Error, Cannot merge article with itself - Article ID: #{article_id}")
+        return
+      end
+      if @article.merge_with(other_article_id) == false
+        redirect_to :action => 'index'
+        flash[:error] = _("Error, Failed merge of article ID:#{article_id} with ID: #{other_article_id}")
+        return
+      end
+
+      new_or_edit
+    end
+
   def attachment_save(attachment)
     begin
       Resource.create(:filename => attachment.original_filename, :mime => attachment.content_type.chomp, 
