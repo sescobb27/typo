@@ -416,6 +416,16 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with merge_with_id
+    body = (self.body || "") + (other_article.body || "")
+    extended = (self.extended || "") + (other_article.extended || "") 
+    published_comments = self.published_comments + other_article.published_comments
+    result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
+    return if result == false
+    other_article.delete
+    result
+  end
+  
   protected
 
   def set_published_at
@@ -429,16 +439,6 @@ class Article < Content
       # Any dump access forcing de-serialization
       password.blank?
     end
-  end
-
-  def merge_with merge_with_id
-    body = (self.body || "") + (other_article.body || "")
-    extended = (self.extended || "") + (other_article.extended || "") 
-    published_comments = self.published_comments + other_article.published_comments
-    result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
-    return if result == false
-    other_article.delete
-    result
   end
 
   def set_defaults
