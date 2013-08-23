@@ -417,13 +417,16 @@ class Article < Content
   end
 
   def merge_with merge_with_id
-    body = (self.body || "") + (other_article.body || "")
-    extended = (self.extended || "") + (other_article.extended || "") 
-    published_comments = self.published_comments + other_article.published_comments
-    result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
-    return if result == false
-    other_article.delete
-    result
+    other_article = Article.find_by_id(merge_with_id);
+        return if other_article == nil
+        body = (self.body || "") + (other_article.body || "")
+        extended = (self.extended || "") + (other_article.extended || "")
+        published_comments = self.published_comments + other_article.published_comments
+
+        result = self.update_attributes(body: body, extended: extended, published_comments: published_comments)
+        return if result == false
+        other_article.delete
+        result
   end
   
   protected
